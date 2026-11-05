@@ -26,6 +26,12 @@ test('desktop model, views, visibility controls and PDF', async ({ page, request
     await button.click();
     await expect(button).toHaveAttribute('aria-pressed', 'true');
   }
+  await page.getByRole('button', { name: 'Bottom', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Bottom', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('html')).toHaveAttribute('data-visible-categories', 'pipes,filter');
+  await page.screenshot({ path: testInfo.outputPath('bottom.png') });
+  await page.getByRole('button', { name: 'Show all', exact: true }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-visible-categories', 'glass,cover,housing,pipes,stand,filter');
   const pdfUrl = await page.getByRole('link', { name: /Drawings/ }).getAttribute('href');
   const pdf = await request.get(new URL(pdfUrl, page.url()).href);
   expect(pdf.ok()).toBe(true);
@@ -68,8 +74,11 @@ test('mobile controls remain usable without horizontal overflow', async ({ page 
       const bounds = await page.getByRole('button', { name: 'Close controls', exact: true }).boundingBox();
       expect(bounds.width).toBeGreaterThanOrEqual(44);
       expect(bounds.height).toBeGreaterThanOrEqual(44);
-      await page.getByRole('button', { name: 'Look inside the plumbing' }).click();
+      await page.getByRole('button', { name: 'Bottom', exact: true }).click();
+      await expect(page.locator('#controls-panel')).not.toBeVisible();
+      await expect(page.locator('html')).toHaveAttribute('data-visible-categories', 'pipes,filter');
       await expect(controls).toBeFocused();
+      await page.screenshot({ path: testInfo.outputPath(`bottom-${width}.png`) });
     }
   }
   expect(errors).toEqual([]);

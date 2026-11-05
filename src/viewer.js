@@ -17,6 +17,7 @@ const views = {
   front: { position: [0, 1, 4.5], up: [0, 1, 0] },
   top: { position: [0, 5.3, .001], up: [0, 0, -1] },
   side: { position: [4.5, 1, 0], up: [0, 1, 0] },
+  bottom: { position: [0, -2.8, .001], up: [0, 0, -1] },
 };
 
 function showError(message, error) {
@@ -115,7 +116,7 @@ async function start() {
   controls.dampingFactor = .09;
   controls.minDistance = .7;
   controls.maxDistance = 9;
-  controls.maxPolarAngle = Math.PI * .83;
+  controls.maxPolarAngle = Math.PI;
   controls.listenToKeyEvents(canvas);
   const hemi = new THREE.HemisphereLight('#fcfffb', '#9d977d', 1.9);
   scene.add(hemi);
@@ -176,9 +177,20 @@ async function start() {
   function setView(name, instant = false) {
     const view = views[name];
     if (!view) throw new Error(`Unknown viewpoint: ${name}`);
+    target.set(0, .8, 0);
     const position = new THREE.Vector3(...view.position);
-    const mobileScale = camera.aspect < 1 ? 1.35 : 1;
-    position.sub(target).multiplyScalar(mobileScale).add(target);
+    if (name === 'bottom' && meshes.some(mesh => mesh.visible)) {
+      const bounds = new THREE.Box3();
+      meshes.filter(mesh => mesh.visible).forEach(mesh => bounds.expandByObject(mesh));
+      const size = bounds.getSize(new THREE.Vector3());
+      bounds.getCenter(target);
+      const halfFov = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const distance = Math.max(size.x / camera.aspect, size.z) / (2 * halfFov) * 1.25 + size.y / 2;
+      position.copy(target).add(new THREE.Vector3(0, -distance, .001));
+    } else {
+      const mobileScale = camera.aspect < 1 ? 1.35 : 1;
+      position.sub(target).multiplyScalar(mobileScale).add(target);
+    }
     if (instant || reducedMotion) {
       activeAnimation = null;
       camera.position.copy(position);
@@ -226,7 +238,14 @@ async function start() {
     activeAnimation = null;
     viewButtons.forEach(button => button.setAttribute('aria-pressed', 'false'));
   });
-  viewButtons.forEach(button => button.addEventListener('click', () => setView(button.dataset.view)));
+  viewButtons.forEach(button => button.addEventListener('click', () => {
+    if (button.dataset.view === 'bottom') {
+      checkboxes.forEach(input => { input.checked = ['pipes', 'filter'].includes(input.dataset.category); });
+      updateVisibility();
+      closeControls();
+    }
+    setView(button.dataset.view);
+  }));
   document.querySelector('#reset-view').addEventListener('click', () => setView('perspective'));
   checkboxes.forEach(input => input.addEventListener('change', updateVisibility));
   document.querySelector('#show-all').addEventListener('click', () => {

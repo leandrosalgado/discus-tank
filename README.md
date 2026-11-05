@@ -5,6 +5,8 @@ Browser-based Three.js viewer of the selected aquarium layout.
 [Open the viewer](https://leandrosalgado.github.io/discus-tank/)
 
 The site includes visibility controls, camera presets and a dimensioned PDF.
+The Bottom preset isolates the pipes and filter and looks up at the connections.
+Use Show all to restore the complete assembly.
 The exported geometry is a viewing model, not an editable CAD or fabrication
 specification. Fittings remain schematic.
 
