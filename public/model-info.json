@@ -1,0 +1,27 @@
+{
+  "title": "Discus aquarium",
+  "option": "B",
+  "units": "metres",
+  "tankMm": [
+    1850,
+    600,
+    700
+  ],
+  "housingMm": [
+    540,
+    140,
+    670
+  ],
+  "meshCount": 173,
+  "triangleCount": 377232,
+  "categories": {
+    "stand": 34,
+    "glass": 5,
+    "cover": 77,
+    "housing": 10,
+    "pipes": 28,
+    "filter": 19
+  },
+  "modelBytes": 7854472,
+  "pdfSha256": "8514940a65f8ff09eeec1d232eeba1b821077a1e93c007173da7b05c7f7b92f5"
+}

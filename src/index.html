@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eaf0ec">
+  <meta name="description" content="Interactive 3D view of the selected discus aquarium layout, with component visibility and dimensioned drawings.">
+  <title>Discus aquarium | Option B</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='4' y='6' width='32' height='28' rx='4' fill='%232d6058'/%3E%3Cpath d='M9 17h22M9 26h22' stroke='%23e4efdf' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="6" width="32" height="28" rx="4"/><path d="M10 17h20M10 26h20"/><path d="M17 17v9M24 17v9"/></svg>
+      <div><strong>Discus aquarium</strong><span>3D design review</span></div>
+    </div>
+    <div class="top-actions">
+      <span class="option-badge"><span></span>Option B</span>
+      <button id="mobile-controls" class="button secondary mobile-only" aria-expanded="false" aria-controls="controls-panel">Controls</button>
+      <a class="button primary pdf-link" href="./drawings.pdf" target="_blank" rel="noopener">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2h7l4 4v12H5zM12 2v5h4M8 11h5M8 14h5"/></svg>
+        <span>Drawings <span class="pdf-label">PDF</span></span>
+      </a>
+    </div>
+  </header>
+  <main class="workspace">
+    <aside id="controls-panel" class="sidebar" aria-label="Viewer controls">
+      <div class="sidebar-heading"><p class="eyebrow">Selected layout</p><h1>A closer look.</h1><p class="intro">Explore the tank, its support and the central filter housing.</p></div>
+      <div class="dimensions" aria-label="Tank dimensions in millimetres">
+        <div><strong>1850</strong><span>Length</span></div><i>&times;</i>
+        <div><strong>600</strong><span>Depth</span></div><i>&times;</i>
+        <div><strong>700</strong><span>Height</span></div><small>mm</small>
+      </div>
+      <section>
+        <h2>Viewpoint</h2>
+        <div class="view-grid" role="group" aria-label="Camera viewpoints">
+          <button data-view="perspective" aria-pressed="true"><span class="view-icon" aria-hidden="true">&#9671;</span>3D view</button>
+          <button data-view="front" aria-pressed="false"><span class="view-icon" aria-hidden="true">&#9633;</span>Front</button>
+          <button data-view="top" aria-pressed="false"><span class="view-icon" aria-hidden="true">&#9649;</span>Top</button>
+          <button data-view="side" aria-pressed="false"><span class="view-icon" aria-hidden="true">&#9647;</span>Side</button>
+        </div>
+      </section>
+      <section>
+        <div class="section-title"><h2>Components</h2><button id="show-all" class="text-button">Show all</button></div>
+        <div class="component-list">
+          <label><span><i class="swatch glass"></i>Glass panels</span><input type="checkbox" data-category="glass" checked><span class="switch" aria-hidden="true"></span></label>
+          <label><span><i class="swatch cover"></i>Sliding cover</span><input type="checkbox" data-category="cover" checked><span class="switch" aria-hidden="true"></span></label>
+          <label><span><i class="swatch housing"></i>Filter housing</span><input type="checkbox" data-category="housing" checked><span class="switch" aria-hidden="true"></span></label>
+          <label><span><i class="swatch pipes"></i>Pipes &amp; fittings</span><input type="checkbox" data-category="pipes" checked><span class="switch" aria-hidden="true"></span></label>
+          <label><span><i class="swatch stand"></i>Stand &amp; support</span><input type="checkbox" data-category="stand" checked><span class="switch" aria-hidden="true"></span></label>
+          <label><span><i class="swatch filter"></i>External filter</span><input type="checkbox" data-category="filter" checked><span class="switch" aria-hidden="true"></span></label>
+        </div>
+        <button id="look-inside" class="button inside-button"><span aria-hidden="true">&#8599;</span> Look inside the plumbing</button>
+      </section>
+      <div class="sidebar-note"><strong>Shallow rear housing</strong><span>540 &times; 140 &times; 670 mm</span><p>Fittings are shown schematically. Use the PDF for the dimensioned drawings.</p></div>
+      <div class="credits">Built with <a href="./THREE-LICENSE.txt" target="_blank" rel="noopener">Three.js</a></div>
+    </aside>
+    <section class="stage" aria-label="Interactive aquarium model">
+      <canvas id="scene" tabindex="0" aria-label="3D aquarium. Drag to rotate, scroll to zoom, or use the viewpoint buttons."></canvas>
+      <div class="stage-top"><span class="stage-caption">OPTION B <i></i> ASSEMBLY</span><button id="reset-view" class="round-button" aria-label="Reset camera view" title="Reset view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 2 8M4 4v6h6"/></svg></button></div>
+      <div id="load-status" class="load-status" role="status"><span class="spinner"></span><strong>Preparing the model</strong><span id="load-progress">Loading geometry...</span></div>
+      <div id="error-panel" class="error-panel" role="alert" hidden><h2>The 3D viewer could not start</h2><p id="error-message"></p><a href="./drawings.pdf" target="_blank" rel="noopener">Open the drawings instead</a><button id="retry" class="button secondary">Try again</button></div>
+      <div id="selection" class="selection" role="status" hidden><span id="selection-category"></span><strong id="selection-name"></strong><button id="clear-selection" aria-label="Clear selected part">&times;</button></div>
+      <div class="stage-bottom"><span>Drag to rotate <i>&bull;</i> Scroll to zoom</span><span class="live-label"><i></i>Interactive model</span></div>
+    </section>
+  </main>
+  <noscript><div class="noscript">JavaScript is required for the 3D viewer. <a href="./drawings.pdf">Open the PDF drawings</a>.</div></noscript>
+  <script type="module" src="./assets/viewer.js"></script>
+</body>
+</html>
