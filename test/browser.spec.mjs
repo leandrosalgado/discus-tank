@@ -6,6 +6,8 @@ test('desktop model, views, visibility controls and PDF', async ({ page, request
   page.on('pageerror', error => errors.push(error.message));
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('./');
+  await expect(page).toHaveTitle('Discus aquarium');
+  await expect(page.getByText('Option B', { exact: false })).toHaveCount(0);
   await expect(page.locator('html')).toHaveAttribute('data-viewer-state', 'ready', { timeout: 45000 });
   await expect(page.locator('html')).toHaveAttribute('data-mesh-count', '173');
   await expect(page.getByRole('checkbox')).toHaveCount(6);

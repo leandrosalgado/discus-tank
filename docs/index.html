@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#eaf0ec">
   <meta name="description" content="Interactive 3D view of the selected discus aquarium layout, with component visibility and dimensioned drawings.">
-  <title>Discus aquarium | Option B</title>
+  <title>Discus aquarium</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='4' y='6' width='32' height='28' rx='4' fill='%232d6058'/%3E%3Cpath d='M9 17h22M9 26h22' stroke='%23e4efdf' stroke-width='3'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./style.css">
 </head>
@@ -16,7 +16,6 @@
       <div><strong>Discus aquarium</strong><span>3D design review</span></div>
     </div>
     <div class="top-actions">
-      <span class="option-badge"><span></span>Option B</span>
       <button id="mobile-controls" class="button secondary mobile-only" aria-expanded="false" aria-controls="controls-panel">Controls</button>
       <a class="button primary pdf-link" href="./drawings.pdf" target="_blank" rel="noopener">
         <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2h7l4 4v12H5zM12 2v5h4M8 11h5M8 14h5"/></svg>
@@ -59,7 +58,7 @@
     </aside>
     <section class="stage" aria-label="Interactive aquarium model">
       <canvas id="scene" tabindex="0" aria-label="3D aquarium. Drag to rotate, scroll to zoom, or use the viewpoint buttons."></canvas>
-      <div class="stage-top"><span class="stage-caption">OPTION B <i></i> ASSEMBLY</span><button id="reset-view" class="round-button" aria-label="Reset camera view" title="Reset view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 2 8M4 4v6h6"/></svg></button></div>
+      <div class="stage-top"><span class="stage-caption">ASSEMBLY</span><button id="reset-view" class="round-button" aria-label="Reset camera view" title="Reset view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 2 8M4 4v6h6"/></svg></button></div>
       <div id="load-status" class="load-status" role="status"><span class="spinner"></span><strong>Preparing the model</strong><span id="load-progress">Loading geometry...</span></div>
       <div id="error-panel" class="error-panel" role="alert" hidden><h2>The 3D viewer could not start</h2><p id="error-message"></p><a href="./drawings.pdf" target="_blank" rel="noopener">Open the drawings instead</a><button id="retry" class="button secondary">Try again</button></div>
       <div id="selection" class="selection" role="status" hidden><span id="selection-category"></span><strong id="selection-name"></strong><button id="clear-selection" aria-label="Clear selected part">&times;</button></div>

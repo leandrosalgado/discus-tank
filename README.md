@@ -1,6 +1,6 @@
 # Discus aquarium
 
-Browser-based Three.js viewer of the selected Option B aquarium layout.
+Browser-based Three.js viewer of the selected aquarium layout.
 
 [Open the viewer](https://leandrosalgado.github.io/discus-tank/)
 
