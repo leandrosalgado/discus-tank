@@ -18,6 +18,17 @@ test('GLB contains only the six selected public categories and finite geometry',
   assert.deepEqual([...new Set(model.nodes.map(node => node.extras.category))].sort(), allowed);
   assert.equal(model.meshes.length, info.meshCount);
   assert.equal(info.option, 'B');
+  const pipes = model.nodes.filter(node => node.extras.category === 'pipes');
+  for (const [label, count] of [
+    ['glass bulkhead', 4], ['hose connector', 4], ['20 mm PVC pipe', 4],
+    ['45 degree PVC elbow', 2], ['90 degree PVC elbow', 2],
+  ]) {
+    assert.equal(pipes.filter(node => node.name.includes(label)).length, count, label);
+  }
+  assert.ok(pipes.every(node => !/isolation|union|envelope/.test(node.name)));
+  for (const role of ['IN', 'OUT']) {
+    assert.equal(model.nodes.filter(node => node.name === `Hypermax LINK ${role} angled adapter`).length, 2);
+  }
   assert.deepEqual(info.housingMm, [540, 140, 670]);
   assert.ok(info.triangleCount > 1000 && info.triangleCount < 1_000_000);
   const binaryStart = 20 + jsonLength + 8;

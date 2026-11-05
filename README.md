@@ -8,7 +8,10 @@ The site includes visibility controls, camera presets and a dimensioned PDF.
 The Bottom preset isolates the pipes and filter and looks up at the connections.
 Use Show all to restore the complete assembly.
 The exported geometry is a viewing model, not an editable CAD or fabrication
-specification. Fittings remain schematic.
+specification. The four glass bulkheads, four hose connectors, two 90-degree
+elbows, two 45-degree elbows and four PVC pipe pieces follow the supplied
+shopping-list photo. Unmeasured dimensions and elbow orientations are approximate.
+The filter has paired IN/IN and OUT/OUT angled LINK adapters.
 
 ## Development
 
