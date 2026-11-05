@@ -11,6 +11,9 @@ test('desktop model, views, visibility controls and PDF', async ({ page, request
   await expect(page.locator('html')).toHaveAttribute('data-viewer-state', 'ready', { timeout: 45000 });
   await expect(page.locator('html')).toHaveAttribute('data-mesh-count', '173');
   await expect(page.getByRole('checkbox')).toHaveCount(6);
+  await expect(page.getByText('Stand timber · KVH NSi')).toBeVisible();
+  await expect(page.getByText('60 × 120 mm section · 4,000 mm stock')).toBeVisible();
+  await expect(page.getByText(/Strength class not specified/)).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('desktop.png') });
 
@@ -52,6 +55,8 @@ test('mobile controls remain usable without horizontal overflow', async ({ page 
   await expect(controls).toHaveAttribute('aria-expanded', 'true');
   await expect(page.getByRole('button', { name: 'Close controls', exact: true })).toBeFocused();
   await expect(page.getByRole('checkbox', { name: 'Glass panels', exact: true })).toBeVisible();
+  await expect(page.getByText('Stand timber · KVH NSi')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Jacer product details' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('mobile-controls.png') });
   await page.getByRole('button', { name: 'Look inside the plumbing' }).click();
