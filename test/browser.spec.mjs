@@ -42,13 +42,34 @@ test('mobile controls remain usable without horizontal overflow', async ({ page 
   const controls = page.getByRole('button', { name: 'Controls', exact: true });
   await controls.click();
   await expect(controls).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.getByRole('button', { name: 'Close controls', exact: true })).toBeFocused();
   await expect(page.getByRole('checkbox', { name: 'Glass panels', exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('mobile-controls.png') });
   await page.getByRole('button', { name: 'Look inside the plumbing' }).click();
   await expect(page.locator('#controls-panel')).not.toBeVisible();
+  await expect(controls).toBeFocused();
   await expect(page.locator('html')).toHaveAttribute('data-visible-categories', 'pipes,stand,filter');
   await page.screenshot({ path: testInfo.outputPath('mobile.png') });
+  await controls.click();
+  await page.getByRole('button', { name: 'Close controls', exact: true }).click();
+  await expect(controls).toBeFocused();
+  await controls.click();
+  await page.keyboard.press('Escape');
+  await expect(controls).toHaveAttribute('aria-expanded', 'false');
+  await expect(controls).toBeFocused();
+  for (const width of [320, 760, 820]) {
+    await page.setViewportSize({ width, height: 844 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    if (width <= 760) {
+      await controls.click();
+      const bounds = await page.getByRole('button', { name: 'Close controls', exact: true }).boundingBox();
+      expect(bounds.width).toBeGreaterThanOrEqual(44);
+      expect(bounds.height).toBeGreaterThanOrEqual(44);
+      await page.getByRole('button', { name: 'Look inside the plumbing' }).click();
+      await expect(controls).toBeFocused();
+    }
+  }
   expect(errors).toEqual([]);
 });
 

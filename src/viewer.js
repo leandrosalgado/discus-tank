@@ -28,16 +28,25 @@ function showError(message, error) {
 }
 
 document.querySelector('#retry').addEventListener('click', () => window.location.reload());
+function closeControls() {
+  const wasOpen = controlsPanel.classList.contains('is-open');
+  mobileControls.setAttribute('aria-expanded', 'false');
+  controlsPanel.classList.remove('is-open');
+  if (wasOpen) mobileControls.focus({ preventScroll: true });
+}
 mobileControls.addEventListener('click', () => {
   const open = mobileControls.getAttribute('aria-expanded') !== 'true';
-  mobileControls.setAttribute('aria-expanded', String(open));
-  controlsPanel.classList.toggle('is-open', open);
-});
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') {
-    mobileControls.setAttribute('aria-expanded', 'false');
-    controlsPanel.classList.remove('is-open');
+  if (!open) {
+    closeControls();
+    return;
   }
+  mobileControls.setAttribute('aria-expanded', 'true');
+  controlsPanel.classList.add('is-open');
+  document.querySelector('#close-controls').focus({ preventScroll: true });
+});
+document.querySelector('#close-controls').addEventListener('click', closeControls);
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeControls();
 });
 
 function makeTexture(kind) {
@@ -228,8 +237,7 @@ async function start() {
     checkboxes.forEach(input => { input.checked = !['glass', 'cover', 'housing'].includes(input.dataset.category); });
     updateVisibility();
     setView('perspective');
-    mobileControls.setAttribute('aria-expanded', 'false');
-    controlsPanel.classList.remove('is-open');
+    closeControls();
   });
   document.querySelector('#clear-selection').addEventListener('click', clearSelection);
   canvas.addEventListener('keydown', event => {
