@@ -2,9 +2,19 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { formatLoadingProgress } from '../src/loading-progress.js';
 
 const root = new URL('../', import.meta.url);
 const read = file => readFile(new URL(file, root));
+
+test('model download progress never exceeds the reported total', () => {
+  assert.equal(formatLoadingProgress(0, 100), '0% loaded');
+  assert.equal(formatLoadingProgress(45, 100), '45% loaded');
+  assert.equal(formatLoadingProgress(100, 100), '100% loaded');
+  assert.equal(formatLoadingProgress(101, 100), 'Loading geometry...');
+  assert.equal(formatLoadingProgress(50, 0), 'Loading geometry...');
+  assert.equal(formatLoadingProgress(Number.NaN, 100), 'Loading geometry...');
+});
 
 test('GLB contains only the six selected public categories and finite geometry', async () => {
   const file = await read('docs/assets/aquarium.glb');

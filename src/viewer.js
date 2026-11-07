@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { formatLoadingProgress } from './loading-progress.js';
 
 const canvas = document.querySelector('#scene');
 const status = document.querySelector('#load-status');
@@ -291,7 +292,7 @@ async function start() {
 
   try {
     const model = await new GLTFLoader().loadAsync(new URL('./aquarium.glb', import.meta.url).href, event => {
-      progress.textContent = event.total > 0 ? `${Math.round(event.loaded / event.total * 100)}% loaded` : 'Loading geometry...';
+      progress.textContent = formatLoadingProgress(event.loaded, event.total);
     });
     const wood = makeTexture('wood');
     const osb = makeTexture('osb');
